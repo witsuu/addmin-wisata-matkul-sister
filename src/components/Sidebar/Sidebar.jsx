@@ -28,17 +28,17 @@ export const Sidebar = () => {
           <li className="nav-item dropdown">
             <Link to="#" className="nav-link dropdown-toggle">
               <Pages />
-              <span>Postingan</span>
+              <span>Daftar Wisata</span>
             </Link>
             <ul className="dropdown-menu border-0">
               <li>
                 <Link to="/postingan/baru" className="nav-link">
-                  Postingan Baru
+                  Tambah Wisata
                 </Link>
               </li>
               <li>
                 <Link to="/postingan" className="nav-link">
-                  Semua Postingan
+                  Semua Wisata
                 </Link>
               </li>
             </ul>

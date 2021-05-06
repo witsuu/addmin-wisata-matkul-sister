@@ -23,7 +23,23 @@ export const NewPost = () => {
       </nav>
       <section>
         <div className="card">
-          <div className="card-body">{/* Tambah tampilan disini */}</div>
+          <div className="card-body">{
+            <form>
+              <div class="form-group">
+                <label>Nama Wisata</label>
+                <input type="text" className="form-control"/>
+              </div>
+              <div class="form-group">
+                <label>Gambar</label>
+                <input type="file" className="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Deskripsi</label>
+                <input type="text" className="form-control"/>
+              </div>
+              <input type="button" value="Submit" className="btn btn-primary"/>
+            </form>
+          }</div>
         </div>
       </section>
     </>
