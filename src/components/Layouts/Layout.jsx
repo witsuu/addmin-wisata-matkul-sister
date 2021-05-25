@@ -3,6 +3,8 @@ import { ViewHeadline, Copyright, FiberManualRecord } from "@material-ui/icons";
 import { Button } from "../Button/Button";
 import { Sidebar } from "../Sidebar/Sidebar";
 import "./Layout.scss";
+import { logout, isLoggedIn } from "../../services/auth";
+import { navigate } from "gatsby";
 
 export const Layout = ({ children }) => {
   const date = new Date();
@@ -12,10 +14,14 @@ export const Layout = ({ children }) => {
     body.classList.add("bgBody");
   }, []);
 
-  const changeSidebar = () => {
-    const body = document.querySelector("body");
-    body.classList.toggle("sidebarMini");
-  };
+  useEffect(() => {
+    if (!isLoggedIn()) navigate("/auth/login");
+  }, []);
+
+  // const changeSidebar = () => {
+  //   const body = document.querySelector("body");
+  //   body.classList.toggle("sidebarMini");
+  // };
 
   return (
     <>
@@ -24,12 +30,16 @@ export const Layout = ({ children }) => {
           "navbar navbar-expand-lg main-navbar position-absolute bg-primary "
         }
       >
-        <ViewHeadline
-          style={{ color: "#fff", marginRight: "auto" }}
-          onClick={changeSidebar}
-        />
+        <ViewHeadline style={{ color: "#fff", marginRight: "auto" }} />
         <div className="navbar-nav navbar-right">
-          <Button className="btn btn-danger" value="Log Out" style={{}} />
+          <Button
+            className="btn btn-danger"
+            value="Log Out"
+            onClick={(e) => {
+              e.preventDefault();
+              logout(() => navigate("/auth/login"));
+            }}
+          />
         </div>
       </nav>
       <Sidebar />

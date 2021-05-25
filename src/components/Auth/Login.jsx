@@ -1,4 +1,9 @@
 import React from "react";
+import { handleLogin, isLoggedIn } from "../../services/auth";
+import { navigate } from "gatsby";
+import "./Login.scss";
+import { trackPromise } from "react-promise-tracker";
+import { Loading } from "../Loader/Loader";
 
 export class Login extends React.Component {
   constructor(props) {
@@ -6,12 +11,12 @@ export class Login extends React.Component {
     this.state = {
       email: "",
       pass: "",
-      error: false,
-      msgError: "",
+      isLoading: false,
+      status: "",
     };
 
     this.handleChangeInput = this.handleChangeInput.bind();
-    this.handleLogin = this.handleLogin.bind();
+    this.handleSubmit = this.handleSubmit.bind();
   }
 
   handleChangeInput = (e) => {
@@ -24,16 +29,19 @@ export class Login extends React.Component {
     });
   };
 
-  handleLogin = (e) => {
-    if (this.state.email === "" || this.state.pass === "") {
-      this.setState({
-        error: true,
-        msgError: "Email dan Password Tidak boleh kosong",
-      });
-    } else {
-      alert("email: " + this.state.email + "\nPassword: " + this.state.pass);
-    }
+  handleSubmit = (e) => {
     e.preventDefault();
+    this.setState(
+      {
+        isLoading: true,
+      },
+      async () => {
+        this.setState({
+          status: await trackPromise(handleLogin(this.state)),
+          isLoading: false,
+        });
+      }
+    );
   };
 
   render() {
@@ -42,6 +50,10 @@ export class Login extends React.Component {
       left: "50%",
       transform: "translate(-50%,-50%)",
     };
+
+    if (isLoggedIn()) {
+      navigate("/");
+    }
 
     return (
       <>
@@ -58,7 +70,12 @@ export class Login extends React.Component {
                 <div className="text-center">
                   <h4>MASUK</h4>
                 </div>
-                <form onSubmit={this.handleLogin} method="Post">
+                <form
+                  onSubmit={(event) => {
+                    this.handleSubmit(event);
+                  }}
+                  method="Post"
+                >
                   <div className="form-group">
                     <label htmlFor="email">Email</label>
                     <input
@@ -71,18 +88,29 @@ export class Login extends React.Component {
                   <div className="form-group">
                     <label htmlFor="pass">Password</label>
                     <input
-                      type="text"
+                      type="password"
                       className="form-control"
                       name="pass"
                       onChange={this.handleChangeInput}
                     />
                   </div>
                   <button type="submit" className="btn btn-primary w-100">
-                    MASUK
+                    {this.state.isLoading ? (
+                      <Loading
+                        type="Oval"
+                        color="#fff"
+                        height={20}
+                        width={20}
+                      />
+                    ) : (
+                      "MASUK"
+                    )}
                   </button>
                 </form>
-                {this.state.error && (
-                  <strong className="text-danger">{this.state.msgError}</strong>
+                {this.state.status === 400 && (
+                  <div className="msgError p-2 rouded mt-2 text-white text-center">
+                    Invalid Credentials!
+                  </div>
                 )}
               </div>
             </div>

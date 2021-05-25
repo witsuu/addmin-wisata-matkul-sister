@@ -41,10 +41,15 @@ export const Sidebar = () => {
                   Semua Wisata
                 </Link>
               </li>
+              <li>
+                <Link to="/postingan/kategori" className="nav-link">
+                  Kategori
+                </Link>
+              </li>
             </ul>
           </li>
           <li className="nav-item">
-            <Link to="#" className="nav-link">
+            <Link to="/about" className="nav-link">
               <Info />
               About
             </Link>

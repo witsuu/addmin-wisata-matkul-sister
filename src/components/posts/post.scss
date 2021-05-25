@@ -1,0 +1,14 @@
+.layer {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(148, 148, 148, 0.158);
+  .card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
